@@ -1,39 +1,43 @@
 package utility;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.*;
+import java.util.*;
 
 public class DataUtility {
 	
+	//Da String a util.Date
 	public static Date stringToDate(String data) throws ParseException{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = sdf.parse(data);
 		return date;
 	}
 	
-	public static java.sql.Date dateUtilToDateSql(Date data){
-		java.sql.Date d = new java.sql.Date(data.getTime());	
-		return d;
+	//Da Calendar a util.Date
+    public static Date calendarToUtilDate(Calendar cal){
+  	   	return  cal.getTime();
+    }
+    
+    //Da util.Date a Calendar
+    public static Calendar utilDateToCalendar(Date d){
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTimeInMillis(d.getTime());
+    	return cal;
+    }
+	
+    //Da util.Date a sql.Date
+	public static java.sql.Date utilDateToSqlDate(Date data){
+		return new java.sql.Date(data.getTime());	
 	}
 	
-	public static long getDifferenzaGiorni(Date data1, Date data2, String s){
+    //Da sql.Date a util.Date
+	public static Date sqlDateToUtilDate(java.sql.Date data){
+		return new Date(data.getTime());	
+	}	
+	
+	//Differenza tra Date
+	public static long getDifferenzaGiorni(Date data1, Date data2){
 		long diffMillisecond = data2.getTime()-data1.getTime();
-		long diff = 0;
-		switch (s){		
-			case "giorni":
-				long millsecDay = 86400000;
-				diff=diffMillisecond/millsecDay;
-				break;
-			case "mesi":
-				long millsecMonth = 86400000*30;
-				diff=diffMillisecond/millsecMonth;
-				break;
-			case "anni":	
-				long millsecYear = 86400000*365;
-				diff=diffMillisecond/millsecYear;
-				break;
-		}
+		long diff = diffMillisecond/86400000;
 		return diff;
 	}
 }
